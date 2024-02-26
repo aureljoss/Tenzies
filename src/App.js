@@ -17,9 +17,16 @@ export default function App() {
     <Die value={randomNumber} />
   ));
 
+  function rollDice() {
+    setNumbers(allNewDice());
+  }
+
   return (
     <main>
       <div id="die-container">{diceElements}</div>
+      <button type="button" id="roll-Button" onClick={rollDice}>
+        Roll
+      </button>
     </main>
   );
 }
