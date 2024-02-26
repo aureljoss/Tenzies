@@ -3,20 +3,23 @@ import "./style.css";
 import Die from "./Die.js";
 
 export default function App() {
+  const [numbers, setNumbers] = React.useState(allNewDice());
+
+  function allNewDice() {
+    const newDice = [];
+    for (let i = 0; i < 10; i++) {
+      newDice.push(Math.floor(Math.random() * 6) + 1);
+    }
+    return newDice;
+  }
+
+  const diceElements = numbers.map((randomNumber) => (
+    <Die value={randomNumber} />
+  ));
+
   return (
     <main>
-      <div id="die-container">
-        <Die value={1} />
-        <Die value={2} />
-        <Die value={3} />
-        <Die value={4} />
-        <Die value={5} />
-        <Die value={6} />
-        <Die value={7} />
-        <Die value={8} />
-        <Die value={9} />
-        <Die value={10} />
-      </div>
+      <div id="die-container">{diceElements}</div>
     </main>
   );
 }
