@@ -29,7 +29,6 @@ main {
 .die-face {
   height: 80px;
   width: 80px;
-  background-color: #ffffff;
   border-radius: 10px;
   display: flex;
   justify-content: center;

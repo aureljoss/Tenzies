@@ -4,36 +4,36 @@ import Die from "./Die.js";
 import { nanoid } from "nanoid";
 
 export default function App() {
-  /**
-   * Challenge: Update the array of numbers in state to be
-   * an array of objects instead. Each object should look like:
-   * { value: <random number>, isHeld: false }
-   *
-   * Making this change will break parts of our code, so make
-   * sure to update things so we're back to a working state
-   */
   const [numbers, setNumbers] = React.useState(allNewDice());
-  const [held, setHeld] = React.useState(false);
 
   function allNewDice() {
     const newDice = [];
     for (let i = 0; i < 10; i++) {
       newDice.push({
         value: Math.floor(Math.random() * 6) + 1,
-        isHeld: false,
         id: nanoid(),
+        isHeld: true,
       });
     }
     console.log(newDice);
     return newDice;
   }
 
-  function hold() {
-    setHeld((prevHeld) => !prevHeld);
+  function holdDice(id) {
+    setNumbers((oldDice) =>
+      oldDice.map((die) => {
+        return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
+      })
+    );
   }
 
-  const diceElements = numbers.map((randomNumber) => (
-    <Die value={randomNumber.value} handleClick={hold} key={randomNumber.id} />
+  const diceElements = numbers.map((die) => (
+    <Die
+      value={die.value}
+      holdDice={() => holdDice(die.id)}
+      key={die.id}
+      isHeld={die.isheld}
+    />
   ));
 
   function rollDice() {
@@ -43,7 +43,7 @@ export default function App() {
   return (
     <main>
       <div id="die-container">{diceElements}</div>
-      <button type="button" id="roll-Button" onClick={rollDice}>
+      <button type="button" id="roll-Button">
         Roll
       </button>
     </main>
