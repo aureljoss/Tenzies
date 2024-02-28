@@ -12,7 +12,7 @@ export default function App() {
       newDice.push({
         value: Math.floor(Math.random() * 6) + 1,
         id: nanoid(),
-        isHeld: true,
+        isHeld: false,
       });
     }
     console.log(newDice);
@@ -32,18 +32,26 @@ export default function App() {
       value={die.value}
       holdDice={() => holdDice(die.id)}
       key={die.id}
-      isHeld={die.isheld}
+      isHeld={die.isHeld}
     />
   ));
 
-  function rollDice() {
-    setNumbers(allNewDice());
+  function rollDice(id){
+    setNumbers((oldDice)=>
+    oldDice.map((die)=>{
+      return die.isHeld ? die : {...die, value: Math.floor(Math.random() * 6) + 1, id: nanoid() }
+    })
+    )
   }
 
   return (
     <main>
+      <div id="rules"> 
+        <h1>Tenzies</h1>
+        <p>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+      </div>
       <div id="die-container">{diceElements}</div>
-      <button type="button" id="roll-Button">
+      <button type="button" id="roll-Button" onClick={rollDice}>
         Roll
       </button>
     </main>
