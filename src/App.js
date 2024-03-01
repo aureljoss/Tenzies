@@ -2,19 +2,11 @@ import React, { useEffect } from "react";
 import "./style.css";
 import Die from "./Die.js";
 import { nanoid } from "nanoid";
+import Confetti from "react-confetti";
 
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
-
-  /**
-   * Challenge: Check the dice array for these winning conditions:
-   * 1. All dice are held, and
-   * 2. all dice have the same value
-   *
-   * If both conditions are true, set `tenzies` to true and log
-   * "You won!" to the console
-   */
 
   useEffect(() => {
     // let arr=[dice[0].isHeld, dice[1].isHeld]
@@ -56,13 +48,20 @@ export default function App() {
   ));
 
   function rollDice(id) {
-    setDice((oldDice) =>
-      oldDice.map((die) => {
-        return die.isHeld
-          ? die
-          : { ...die, value: Math.floor(Math.random() * 6) + 1, id: nanoid() };
-      })
-    );
+    if (tenzies === false) {
+      setDice((oldDice) =>
+        oldDice.map((die) => {
+          return die.isHeld
+            ? die
+            : {
+                ...die,
+                value: Math.floor(Math.random() * 6) + 1,
+                id: nanoid(),
+              };
+        })
+      );
+    }
+    else {allNewDice()}
   }
 
   return (
@@ -76,8 +75,9 @@ export default function App() {
       </div>
       <div id="die-container">{diceElements}</div>
       <button type="button" id="roll-Button" onClick={rollDice}>
-        Roll
+        {tenzies ? "New Game" : "Roll"}
       </button>
+      {tenzies ? <Confetti /> : ""}
     </main>
   );
 }
