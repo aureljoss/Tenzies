@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import "./style.css";
-import Die from "./Die.js";
+import Die from "./Components/Die.js";
 import { nanoid } from "nanoid";
 import Confetti from "react-confetti";
+import Timer from "./Components/Timer.js";
 
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
+  const [count, setCount] = React.useState(1);
 
   useEffect(() => {
     // let arr=[dice[0].isHeld, dice[1].isHeld]
@@ -48,7 +50,7 @@ export default function App() {
   ));
 
   function rollDice(id) {
-    if (tenzies === false) {
+    if (!tenzies) {
       setDice((oldDice) =>
         oldDice.map((die) => {
           return die.isHeld
@@ -60,24 +62,35 @@ export default function App() {
               };
         })
       );
+      setCount((prevCount) => prevCount + 1);
+    } else {
+      setTenzies(false);
+      setDice(allNewDice());
+      setCount(1);
     }
-    else {allNewDice()}
   }
 
   return (
     <main>
+      {tenzies && <Confetti />}
       <div id="rules">
         <h1>Tenzies</h1>
         <p>
-          Roll until all dice are the same. Click each die to freeze it at its
-          current value between rolls.
+          {tenzies
+            ? "You won!!!"
+            : "Roll until all dice are the same. Click each die to freeze it at its current value between rolls."}
         </p>
       </div>
       <div id="die-container">{diceElements}</div>
       <button type="button" id="roll-Button" onClick={rollDice}>
         {tenzies ? "New Game" : "Roll"}
       </button>
-      {tenzies ? <Confetti /> : ""}
+      <div>
+        <p className="button-Count-Time">Rolls: {count}</p>
+        <p>
+          Timer: <Timer />
+        </p>
+      </div>
     </main>
   );
 }
