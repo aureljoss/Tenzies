@@ -9,6 +9,8 @@ export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
   const [count, setCount] = React.useState(1);
+  const [time, setTime] = React.useState(0);
+  const [isRunning, setIsRunning] = React.useState(false);
 
   useEffect(() => {
     // let arr=[dice[0].isHeld, dice[1].isHeld]
@@ -19,6 +21,24 @@ export default function App() {
       console.log("You WON!");
     }
   }, dice);
+
+  useEffect(() => {
+    let intervalId;
+    if (isRunning) {
+      // setting time from 0 to 1 every 10 milisecond using javascript setInterval method
+      intervalId = setInterval(() => setTime(time + 1), 10);
+    }
+    return () => clearInterval(intervalId);
+  }, [isRunning, time]);
+
+  // Hours calculation
+  const hours = Math.floor(time / 360000);
+
+  // Minutes calculation
+  const minutes = Math.floor((time % 360000) / 6000);
+
+  // Seconds calculation
+  const seconds = Math.floor((time % 6000) / 100);
 
   function allNewDice() {
     const newDice = [];
@@ -51,6 +71,7 @@ export default function App() {
 
   function rollDice(id) {
     if (!tenzies) {
+      setIsRunning(!isRunning);
       setDice((oldDice) =>
         oldDice.map((die) => {
           return die.isHeld
@@ -67,6 +88,10 @@ export default function App() {
       setTenzies(false);
       setDice(allNewDice());
       setCount(1);
+      setIsRunning(!isRunning);
+    }
+    if(tenzies){
+      setTime(0);
     }
   }
 
@@ -88,7 +113,8 @@ export default function App() {
       <div>
         <p className="button-Count-Time">Rolls: {count}</p>
         <p>
-          Timer: <Timer />
+          Timer: {hours}:{minutes.toString().padStart(2, "0")}:
+          {seconds.toString().padStart(2, "0")}
         </p>
       </div>
     </main>
