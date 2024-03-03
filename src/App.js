@@ -8,7 +8,7 @@ import Timer from "./Components/Timer.js";
 export default function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
-  const [count, setCount] = React.useState(1);
+  const [count, setCount] = React.useState(0);
   const [time, setTime] = React.useState(0);
   const [isRunning, setIsRunning] = React.useState(false);
 
@@ -30,6 +30,10 @@ export default function App() {
     }
     return () => clearInterval(intervalId);
   }, [isRunning, time]);
+
+  useEffect(() => {
+    tenzies && setIsRunning(false);
+  });
 
   // Hours calculation
   const hours = Math.floor(time / 360000);
@@ -71,7 +75,6 @@ export default function App() {
 
   function rollDice(id) {
     if (!tenzies) {
-      setIsRunning(!isRunning);
       setDice((oldDice) =>
         oldDice.map((die) => {
           return die.isHeld
@@ -88,10 +91,13 @@ export default function App() {
       setTenzies(false);
       setDice(allNewDice());
       setCount(1);
-      setIsRunning(!isRunning);
     }
-    if(tenzies){
+    if (count === 0) {
+      setIsRunning(true);
+    }
+    if (tenzies) {
       setTime(0);
+      setCount(0);
     }
   }
 
@@ -110,9 +116,9 @@ export default function App() {
       <button type="button" id="roll-Button" onClick={rollDice}>
         {tenzies ? "New Game" : "Roll"}
       </button>
-      <div>
+      <div id="timer-Count">
         <p className="button-Count-Time">Rolls: {count}</p>
-        <p>
+        <p className="button-Count-Time">
           Timer: {hours}:{minutes.toString().padStart(2, "0")}:
           {seconds.toString().padStart(2, "0")}
         </p>
