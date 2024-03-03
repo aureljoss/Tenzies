@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "//aureljoss.github.io/tenzies/static/css/main.943bf7de.css",
+    "main.js": "//aureljoss.github.io/tenzies/static/js/main.5cfecb2c.js",
+    "index.html": "//aureljoss.github.io/tenzies/index.html",
+    "main.943bf7de.css.map": "//aureljoss.github.io/tenzies/static/css/main.943bf7de.css.map",
+    "main.5cfecb2c.js.map": "//aureljoss.github.io/tenzies/static/js/main.5cfecb2c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.943bf7de.css",
+    "static/js/main.5cfecb2c.js"
+  ]
+}
